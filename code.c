@@ -49,7 +49,10 @@ int main(void) {
 	return 0;
 }
 void Begining_ask(void) {
+	int flag;
 	char first_user_input;
+	do{
+	flag=1;
 	printf("a. Admin Mode\n");
 	printf("b. User Mode\n");
 	scanf(" %c", &first_user_input);
@@ -64,8 +67,9 @@ void Begining_ask(void) {
 		break;
 	default:
 		printf("Wrong input!!, please try again\n");
-		Begining_ask();
+		flag=0;
 	}
+	}while(flag==0);
 }
 
 void admin_mode(void) {
@@ -92,6 +96,9 @@ void admin_mode(void) {
 }
 void display_begining_list(void) {
 	char chosen_feature;
+	int flag;
+	do{
+		flag=1;
 	printf("a. Add new patient record\n");
 	printf("b. Edit patient record\n");
 	printf("c. Reserve a slot with the doctor\n");
@@ -126,11 +133,17 @@ void display_begining_list(void) {
 		exit(1);
 	default:
 		printf("Wrong input!! , please try again\n");
-		display_begining_list();
+		flag=0;
 	}
+	}while(flag==0);
 }
 void add(void) {
-	patient *link = (patient*) malloc(sizeof(patient));/*To add new node at linked list*/
+	int flag;
+	unsigned int temp_id;
+	patient *link=NULL;
+	do{
+	flag=1;
+	link = (patient*) malloc(sizeof(patient));/*To add new node at linked list*/
 	if (link == NULL) {
 		printf("Memory allocation failed\n");
 		return;
@@ -143,17 +156,17 @@ void add(void) {
 	printf("Enter patient gender (M) or (F):\n");
 	scanf(" %c", &(link->gender));
 	printf("Enter patient unique ID:\n\n");
-	unsigned int temp_id;
 	scanf("%u", &temp_id);
 	current = head;
 	while (current != NULL) {/*Find the input id is exist or not*/
 		if ((current->id) == temp_id) {
 			printf("This ID is already exists,please try again\n");
-			add();
+			flag=0;
 
 		}
 		current = current->next;
 	}
+	}while(flag==0);
 	link->id = temp_id;
 	link->next = head;
 	head = link;
@@ -164,6 +177,10 @@ void add(void) {
 
 void edit(void) {
 	unsigned int temp_id;
+	int flag;
+	do{
+		flag=1;
+
 	printf("Enter patinet ID to be edited\n");
 	scanf("%u", &temp_id);
 	current = head;
@@ -187,12 +204,17 @@ void edit(void) {
 	}
 	if(current==NULL){
 	printf("Error! ID not found , please try again\n");
-		edit();
+		flag=0;
 	}
-
+}while(flag==0);
 }
 void reserve(void) {
 	unsigned int chosen_slot;
+	unsigned int temp_id;
+		int flag;
+		do{
+			flag=1;
+
 	printf("Available slots are:\n\n");
 	if (slot[0] == not_reserved)/*To control if the slot available or not */
 		printf("Slot 1 From 2:00 pm To 2:30 pm\n");
@@ -210,7 +232,7 @@ void reserve(void) {
 		printf("Slot 5 From 5:00 pm To 5:30 pm\n");
 
 	printf("Enter patient ID to reserve a slot:\n");
-	unsigned int temp_id;
+
 	scanf("%u", &temp_id);
 	current = head;
 	while (current != NULL) {
@@ -281,15 +303,19 @@ void reserve(void) {
 	}
 	if (current == NULL) {
 		printf("Error! ID not found, please try again\n");
-		reserve();
-		return;
+		flag=0;
 	}
-
+		}while(flag==0);
 }
 
 void cancel(void) {
-	printf("Enter patient ID to cancel reservation:\n");
 	unsigned int temp_id;
+	int flag;
+	do{
+		flag=1;
+
+	printf("Enter patient ID to cancel reservation:\n");
+
 	scanf(" %u", &temp_id);
 	current = head;
 	while (current != NULL) {
@@ -305,14 +331,17 @@ void cancel(void) {
 	}
 	if (current == NULL) {
 		printf("Error! ID not found, Please try again\n");
-		cancel();
-		return;
+		flag=0;
 	}
-
+	}while(flag==0);
 }
 
 void user_mode(void) {
 	char user_input;
+	int flag;
+	do{
+		flag=1;
+
 	printf("a. View patient record\n");
 	printf("b. View today's reservations\n");
 	scanf(" %c", &user_input);
@@ -327,13 +356,19 @@ void user_mode(void) {
 		break;
 	default:
 		printf("Wrong input!!, please try again\n");
-		user_mode();
+		flag=0;
 
 	}
+	}while(flag==0);
 }
 void view_information(void){
+	unsigned int temp_id;
+	int flag;
+	do{
+		flag=1;
+
 	printf("Enter patient id to view his/her information:\n");
-			unsigned int temp_id;
+
 			scanf(" %u", &temp_id);
 			current = head;
 			while (current != NULL) {
@@ -354,11 +389,10 @@ void view_information(void){
 			}
 			if (current == NULL) {
 				printf("Error! ID not found, please try again\n");
-				view_information();
-
-				return;
+				flag=0;
 			}
-}
+	}while(flag==0);
+	}
 void print_today_reservations(void){
 	int i;
 
