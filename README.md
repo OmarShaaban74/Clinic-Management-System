@@ -1,5 +1,5 @@
 # Clinic-Management-System
-A clinic Maanagement system that has two modes
+A clinic Management system that has two modes
 ## First Mode is Admin_Mode 
 ### it needs to a password to enter this mode and you can do this 4 features:
 #### Add new patient record (every patient has a unique ID)
