@@ -162,7 +162,7 @@ void add(void) {
 		if ((current->id) == temp_id) {
 			printf("This ID is already exists,please try again\n");
 			flag=0;
-
+			break;
 		}
 		current = current->next;
 	}
