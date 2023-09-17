@@ -33,7 +33,7 @@ patient *current = NULL; /*ptr that move over all linked list nodes*/
 /*Functions Prototypes*/
 void Begining_ask(void);
 void display_begining_list(void);
-void admin_mode(void);
+int admin_mode(void);
 void add(void);
 void edit(void);
 void reserve(void);
@@ -45,34 +45,97 @@ void print_today_reservations(void);
 int main(void) {
 	setvbuf(stdout, NULL, _IONBF, 0);
 	setvbuf(stderr, NULL, _IONBF, 0);
-	Begining_ask();
+	unsigned char flag;
+	char first_user_input;
+	char chosen_feature;
+	do{
+		Begining_ask();
+		flag=1;
+		scanf(" %c", &first_user_input);
+		switch (first_user_input) {
+		case 'a':
+		case 'A':
+			if(admin_mode()==0){
+				return 0;
+			}
+			do{
+				display_begining_list();
+					flag=1;
+				scanf(" %c", &chosen_feature);
+				switch (chosen_feature) {
+				case 'a':
+				case 'A':
+					add();
+					break;
+				case 'b':
+				case 'B':
+					edit();
+					break;
+				case 'c':
+				case 'C':
+					reserve();
+					break;
+				case 'd':
+				case 'D':
+					cancel();
+					break;
+				case'e':
+				case'E':
+					flag=0;
+					break;
+				case'f':
+				case'F':
+					printf("Quit the system\n");
+					return 0 ;
+				default:
+					printf("Wrong input!! , please try again\n");
+
+				}
+				}while(flag!=0);
+			break;
+		case 'b':
+		case 'B':
+			user_mode();
+			char user_input;
+				do{
+					flag=1;
+				scanf(" %c", &user_input);
+				switch (user_input) {
+				case 'a':
+				case 'A':
+					view_information();
+					flag=0;
+					break;
+				case 'b':
+				case 'B':
+					print_today_reservations();
+					flag=0;
+					break;
+				default:
+					printf("Wrong input!!, please try again\n");
+
+
+				}
+				}while(flag!=0);
+			break;
+		case 'c':
+		case 'C':
+			printf("Quit the system");
+			return 0;
+		default:
+			printf("Wrong input!!, please try again\n");
+			flag=0;
+		}
+		}while(flag==0);
 	return 0;
 }
 void Begining_ask(void) {
-	int flag;
-	char first_user_input;
-	do{
-	flag=1;
 	printf("a. Admin Mode\n");
 	printf("b. User Mode\n");
-	scanf(" %c", &first_user_input);
-	switch (first_user_input) {
-	case 'a':
-	case 'A':
-		admin_mode();
-		break;
-	case 'b':
-	case 'B':
-		user_mode();
-		break;
-	default:
-		printf("Wrong input!!, please try again\n");
-		flag=0;
+	printf("c. Exit\n");
 	}
-	}while(flag==0);
-}
 
-void admin_mode(void) {
+int admin_mode(void) {
 	unsigned int password;
 	short wrong_temps = 0;
 	printf("Enter The Password\n");
@@ -85,57 +148,22 @@ void admin_mode(void) {
 		wrong_temps++;
 		if (wrong_temps == 3) {
 			printf("You Entered wrong passwored 3 times!!!\nThe system will shutdown\n");
-			return;
+			return 0;
 		}
 		printf("Incorrect password, please try again\n");
 		}
 	}
 	printf("Login Successfully\n\n");
-	display_begining_list();
-
+	return 1;
 }
 void display_begining_list(void) {
-	char chosen_feature;
-	int flag;
-	do{
-		flag=1;
 	printf("a. Add new patient record\n");
 	printf("b. Edit patient record\n");
 	printf("c. Reserve a slot with the doctor\n");
 	printf("d. Cancel reservation\n");
 	printf("e. Main menu\n");
 	printf("f. Exit\n");
-	scanf(" %c", &chosen_feature);
-	switch (chosen_feature) {
-	case 'a':
-	case 'A':
-		add();
-		break;
-	case 'b':
-	case 'B':
-		edit();
-		break;
-	case 'c':
-	case 'C':
-		reserve();
-		break;
-	case 'd':
-	case 'D':
-		cancel();
-		break;
-	case'e':
-	case'E':
-		Begining_ask();
-		break;
-	case'f':
-	case'F':
-		printf("Quit the system\n");
-		exit(1);
-	default:
-		printf("Wrong input!! , please try again\n");
-		flag=0;
-	}
-	}while(flag==0);
+
 }
 void add(void) {
 	int flag;
@@ -171,7 +199,6 @@ void add(void) {
 	link->next = head;
 	head = link;
 	printf("Patient added successfully\n\n");
-	display_begining_list();
 
 }
 
@@ -195,7 +222,7 @@ void edit(void) {
 			printf("Edit patient gender (M) or (F):\n");
 			scanf(" %c", &(current->gender));
 			printf("Edited successfully\n");
-			display_begining_list();
+			break;
 		}
 
 		else {
@@ -245,56 +272,56 @@ void reserve(void) {
 				slot[0] = reseved;
 				current->reservation_slot = 1;
 				printf("slot reserved successfully\n");
-				display_begining_list();}
+				}
 				else{
 					printf("Error! This patient already reserved slot %d \n",current->reservation_slot);
-					display_begining_list();
+
 				}
-				break;
+				return;
 			case 2:
 				if(!(current->reservation_slot)){
 				slot[1] = reseved;
 				current->reservation_slot = 2;
 				printf("slot reserved successfully\n");
-				display_begining_list();}
+				}
 				else{
 					printf("Error! This patient already reserved slot %d \n",current->reservation_slot);
-						display_begining_list();
+
 				}
-				break;
+				return;
 			case 3:
 				if(!(current->reservation_slot)){
 				slot[2] = reseved;
 				current->reservation_slot = 3;
 				printf("slot reserved successfully\n");
-				display_begining_list();}
+				}
 				else {
 					printf("Error! This patient already reserved slot %d \n",current->reservation_slot);
-					display_begining_list();
+
 				}
-				break;
+				return;
 			case 4:
 				if(!(current->reservation_slot)){
 				slot[3] = reseved;
 				current->reservation_slot = 4;
 				printf("slot reserved successfully\n");
-				display_begining_list();}
+				}
 				else {
 					printf("Error! This patient already reserved slot %d \n",current->reservation_slot);
-					display_begining_list();
+
 				}
-				break;
+				return;
 			case 5:
 				if(!(current->reservation_slot)){
 				slot[4] = reseved;
 				current->reservation_slot = 5;
 				printf("slot reserved successfully\n");
-				display_begining_list();}
+				}
 			else {
 				printf("Error! This patient already reserved slot %d \n",current->reservation_slot);
-				display_begining_list();
+
 			}
-				break;
+				return;
 
 			}
 
@@ -324,7 +351,7 @@ void cancel(void) {
 			slot[current->reservation_slot - 1] = not_reserved;
 			current->reservation_slot = 0;
 			printf("cancelled successfully\n");
-			display_begining_list();
+			return;
 
 		}
 		current = current->next;
@@ -337,29 +364,9 @@ void cancel(void) {
 }
 
 void user_mode(void) {
-	char user_input;
-	int flag;
-	do{
-		flag=1;
-
 	printf("a. View patient record\n");
 	printf("b. View today's reservations\n");
-	scanf(" %c", &user_input);
-	switch (user_input) {
-	case 'a':
-	case 'A':
-		view_information();
-		break;
-	case 'b':
-	case 'B':
-		print_today_reservations();
-		break;
-	default:
-		printf("Wrong input!!, please try again\n");
-		flag=0;
 
-	}
-	}while(flag==0);
 }
 void view_information(void){
 	unsigned int temp_id;
@@ -383,7 +390,7 @@ void view_information(void){
 					else{
 						printf("Not reserved yet\n");
 					}
-					display_begining_list();
+						return;
 				}
 				current = current->next;
 			}
@@ -417,7 +424,7 @@ void print_today_reservations(void){
 		}
 
 	}
-	display_begining_list();
+
 return;
 }
 
